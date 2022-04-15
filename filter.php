@@ -2148,10 +2148,9 @@ class filter_filtercodes extends moodle_text_filter {
 
             // Tag: {categoriesx}. An unordered list of links to current level categories.
             if (stripos($text, '{categoriesx}') !== false) {
-                $sql = "SELECT cc.id, cc.sortorder, cc.name, cc.visible, cc.parent
-                        FROM {course_categories} cc
-                        WHERE cc.parent = $catid AND cc.visible = 1
-                        ORDER BY cc.sortorder";
+                $sql = $DB->get_field_sql("SELECT cc.id, cc.sortorder, cc.name, cc.visible, cc.parent  
+                                           FROM {course_categories} cc  WHERE cc.parent = ? AND cc.visible = ?
+                                           ORDER BY cc.sortorder", array($catid,1));
                 $list = '';
                 $categories = $DB->get_recordset_sql($sql, ['contextcoursecat' => CONTEXT_COURSECAT]);
                 foreach ($categories as $category) {
